@@ -1,0 +1,29 @@
+---
+
+# tasks file for Work
+- name: include base packages
+  include: debian-packages.yml
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  tags:
+    - packages
+
+- name: include pip modules
+  include: pip.yml
+  tags:
+    - pip
+
+- name: include packages from binaries
+  include: binaries.yml
+  tags:
+    - binaries
+
+- name: Include snap packages
+  include: snap.yml
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  tags:
+    - snap
+
+- name: Include npm packages
+  include: npm.yml
+  tags:
+    - npm

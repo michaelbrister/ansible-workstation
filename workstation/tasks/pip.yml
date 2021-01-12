@@ -1,0 +1,23 @@
+---
+# Install pip modules
+
+- name: pip | self-update
+  pip:
+    name: pip
+    state: latest
+  tags:
+    - pip
+
+- name: pip | install packages
+  pip:
+    name:
+      - ansible==2.10.4
+      - ansible-base==2.10.4
+      - awscli==1.18.198
+      - boto
+      - boto3
+      - slackpy
+    executable: pip3
+    extra_args: --upgrade
+  tags:
+    - pip

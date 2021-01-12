@@ -1,0 +1,7 @@
+---
+
+- name: NPM Install serverless
+  community.general.npm:
+      name: serverless
+      global: yes
+      state: present
