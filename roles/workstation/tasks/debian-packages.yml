@@ -78,6 +78,13 @@
   tags:
     - docker
 
+- name: Fix user group
+  user:
+      name: "{{ lookup('env', 'USER') }}"
+      group: "{{ lookup('env', 'USER') }}"  
+  tags:
+    - docker
+
 - name: Add user to docker group
   user:
       name: "{{ lookup('env', 'USER') }}"
