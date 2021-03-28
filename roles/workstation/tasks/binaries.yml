@@ -303,7 +303,7 @@
 
 - name: Create neovim config directory
   file:
-    path: ~/.config/nvim
+    path: /home/{{ lookup('env', 'USER') }}/.config/nvim
     state: directory
     owner: "{{ lookup('env', 'USER') }}"
     group: "{{ lookup('env', 'USER') }}"

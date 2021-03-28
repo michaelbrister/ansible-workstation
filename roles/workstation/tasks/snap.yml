@@ -1,0 +1,9 @@
+---
+- name: Install snap packages
+  snap:
+    name:
+      - kontena-lens
+      - intellij-idea-community
+      - slack
+      - yq
+    classic: yes
