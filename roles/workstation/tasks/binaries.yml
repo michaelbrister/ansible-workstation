@@ -335,6 +335,20 @@
   tags:
     - neovim
 
+###################
+# Install zshrc 
+###################
+
+- name: Copy zshrc
+  copy:
+    src: .zshrc
+    dest: /home/{{ lookup('env', 'USER') }}/.zshrc
+    owner: "{{ lookup('env', 'USER') }}"
+    group: "{{ lookup('env', 'USER') }}"
+    mode: '0644'
+  tags:
+    - neovim
+
 ##################################
 # Install stern - kubernetes logs
 ##################################
