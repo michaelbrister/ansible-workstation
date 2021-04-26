@@ -341,7 +341,7 @@
 
 - name: Copy zshrc
   copy:
-    src: .zshrc
+    src: zshrc
     dest: /home/{{ lookup('env', 'USER') }}/.zshrc
     owner: "{{ lookup('env', 'USER') }}"
     group: "{{ lookup('env', 'USER') }}"

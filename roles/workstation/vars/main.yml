@@ -59,7 +59,7 @@ helmfile_url: "https://github.com/roboll/helmfile/releases/download/{{ helmfile_
 # golang
 golang_download_location: https://golang.org/dl/
 golang_arch: amd64
-golang_version: go1.16.2
+golang_version: go1.16.3
 golang_file: "{{ golang_version }}.linux-{{ golang_arch }}.tar.gz"
 golang_url: https://golang.org/dl/{{ golang_file }}
 golang_install_directory: /usr/local
