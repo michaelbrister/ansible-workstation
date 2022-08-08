@@ -85,7 +85,7 @@
 - name: Add pritunel-cloud key
   apt_key:
     url: "https://swupdate.openvpn.net/repos/openvpn-repo-pkg-key.pub"
-    state: present
+    state: absent 
   tags:
     - pritunl 
     - never
@@ -94,7 +94,8 @@
   apt_repository:
     repo: deb [arch=amd64] https://swupdate.openvpn.net/community/openvpn3/repos {{ ansible_distribution_release }} main
     filename: openvpn-cloud
-    state: present
+    state: absent 
+  tags:
   tags:
     - pritunl 
     - never
@@ -103,7 +104,7 @@
   apt:
     update_cache: yes
     name: openvpn3
-    state: present
+    state: absent 
   tags:
     - pritunl
     - never
@@ -192,6 +193,34 @@
     state: present
   tags:
     - packer
+
+##########################
+# Install nala
+##########################
+
+- name: Add nala apt key
+  apt_key:
+    url: "https://deb.volian.org/volian/scar.key"
+    state: present
+  tags:
+    - nala 
+
+- name: Add nala repository
+  apt_repository:
+    repo: "https://deb.volian.org/volian/ scar main"
+    # repo: "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+    filename: nala 
+    state: present
+  tags:
+    - nala 
+
+- name: Install nala
+  apt:
+    update_cache: yes
+    name: nala 
+    state: present
+  tags:
+    - nala 
 
 ######################################
 # Install sublime text / sublime merge
