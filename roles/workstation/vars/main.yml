@@ -64,9 +64,6 @@ fnm_version: 1.35.1
 fnm_node_versions:
   - 20.11.1
 
-# stern version
-stern_version: 1.11.0
-
 # lens
 open_lens_url: https://github.com/MuhammedKalkan/OpenLens/releases/download/v{{ open_lens_version }}/OpenLens-{{ open_lens_version }}.amd64.deb
 open_lens_version: 6.4.15
