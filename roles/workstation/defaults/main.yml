@@ -1,5 +1,6 @@
 ---
 # defaults file for Work
+
 # golang
 golang_download_location: https://golang.org/dl/
 golang_arch: amd64

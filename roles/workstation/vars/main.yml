@@ -2,10 +2,10 @@
 
 terraform_arch: "amd64"
 terraform_system: "linux"
-terraform_version: "0.14.4"
+terraform_version: "1.7.4"
 terraform_file: "terraform_{{ terraform_version }}_{{ terraform_system }}_{{ terraform_arch }}.zip"
 terraform_url: "https://releases.hashicorp.com/terraform/{{ terraform_version }}/{{ terraform_file }}"
-terraform_checksum: "sha256:042f1f4fb47696b3442eca12bce7cce6de0b477b299503ddad6b8bc3777a54b5"
+terraform_checksum: "sha256:285539a6fd62fb79f05edc15cc207ca90f282901c32261085ea0642a0d638dfd"
 terraform_bin_dir: /usr/local/bin
 terraform_bin: "{{ terraform_bin_dir }}/terraform"
 terraform_path: "/opt/terraform"
@@ -15,7 +15,7 @@ terraform_version_bin: "{{ terraform_version_dir }}/terraform"
 # terragrunt
 terragrunt_arch: "amd64"
 terragrunt_system: "linux"
-terragrunt_version: "0.22.4"
+terragrunt_version: "0.36.2"
 terragrunt_file: "terragrunt_{{ terragrunt_system }}_{{ terragrunt_arch }}"
 terragrunt_url: "https://github.com/gruntwork-io/terragrunt/releases/download/v{{ terragrunt_version }}/{{ terragrunt_file }}"
 terragrunt_checksum: "sha256:931b19970cd8962b2af361f58a41bdce3cc75153c39c4cf14c5992ea09a19cb2"
@@ -37,7 +37,7 @@ docker_machine_driver_checksum: "fabd7a19c8cca563e32321f070311d70404311602e5c9db
 
 # helm
 helm_arch: "linux-amd64"
-helm_version: "v3.4.0"
+helm_version: "v3.8.2"
 helm_file: "helm-{{ helm_version }}-{{ helm_arch }}.tar.gz"
 helm_folder: "/tmp/{{ helm_arch }}"
 helm_url: https://get.helm.sh/{{ helm_file }}
@@ -45,7 +45,7 @@ helm_checksum: cacde7768420dd41111a4630e047c231afa01f67e49cc0c6429563e024da4b98
 
 # helmfile
 helmfile_arch: linux_amd64
-helmfile_version: v0.132.0
+helmfile_version: v0.148.1
 helmfile_folder: "/tmp/"
 helmfile_file: helmfile_linux_amd64
 helmfile_url: "https://github.com/roboll/helmfile/releases/download/{{ helmfile_version }}/{{ helmfile_file }}"
@@ -73,3 +73,8 @@ open_lens_version: 6.4.15
 
 # mage
 mage_binary_url: https://github.com/magefile/mage/releases/download/v1.14.0/mage_1.14.0_Linux-64bit.tar.gz
+
+# sops - encrypt terraform
+sops_version: 3.7.2
+sops_arch: amd64
+sops_url: https://github.com/mozilla/sops/releases/download/v{{ sops_version }}/sops_{{ sops_version}}_{{ sops_arch }}.deb

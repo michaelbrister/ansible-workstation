@@ -22,6 +22,7 @@
   stat:
     path: "{{ terraform_version_bin }}"
   register: terraform_bin_st
+  check_mode: false
   tags:
     - terraform
 
@@ -30,7 +31,7 @@
     url: "{{ terraform_url }}"
     dest: "{{ terraform_version_dir }}/{{ terraform_file }}"
     checksum: "{{ terraform_checksum }}"
-  when: not terraform_bin_st.stat.exists
+  when: not terraform_bin_st.stat.exists and not ansible_check_mode
   tags:
     - terraform
 
@@ -39,7 +40,7 @@
     src: "{{ terraform_version_dir }}/{{ terraform_file }}"
     dest: "{{ terraform_version_dir }}"
     creates: "{{ terraform_version_bin }}"
-  when: not terraform_bin_st.stat.exists
+  when: not terraform_bin_st.stat.exists and not ansible_check_mode
   tags:
     - terraform
 
@@ -55,6 +56,7 @@
     src: "{{ terraform_version_bin }}"
     dest: "{{ terraform_bin }}"
     state: link
+  when: not ansible_check_mode
   tags:
     - terraform
 
@@ -71,18 +73,22 @@
     executable: /bin/bash
   register: terraform_bin_version
   changed_when: false
+  check_mode: false
+  when: not ansible_check_mode
   tags:
     - terraform
 
 - name: terraform | Terraform version
   set_fact:
     terraform_installed_version: "{{ terraform_bin_version.stdout | replace('Terraform v', '') }}"
+  when: not ansible_check_mode
   tags:
     - terraform
 
 - name: terraform | Check that Terraform version is installed correctly
   assert:
     that: "terraform_installed_version == terraform_version"
+  when: not ansible_check_mode
   tags:
     - terraform
 
@@ -94,6 +100,7 @@
   stat:
     path: "/usr/local/bin/terragrunt"
   register: terragrunt_bin_st
+  check_mode: false
   tags:
     - terragrunt
 
@@ -121,6 +128,7 @@
     executable: /bin/bash
   register: terragrunt_bin_version
   changed_when: false
+  check_mode: false
   tags:
     - terragrunt
 
@@ -141,6 +149,7 @@
 - name: terragrunt | Check that Terragrunt version is installed correctly
   assert:
     that: "terragrunt_installed_version == terragrunt_version"
+  when: not ansible_check_mode
   tags:
     - terragrunt
 
@@ -153,15 +162,20 @@
   ignore_errors: yes
   register: golang_current_version
   changed_when: false
+  check_mode: false
+  tags:
+    - golang
 
 - name: "Check golang version"
   debug:
     msg:
       - "Current golang version is {{ golang_current_version.stdout }}"
       - "Desired golang version is {{ golang_version }}"
+  tags:
+    - golang
 
 - block:
-  - name: install - delete old version
+  - name: Delete old golang version
     file:
       path: "{{ golang_install_directory}}/go"
       state: absent
@@ -171,32 +185,29 @@
       url: "{{ golang_url }}"
       dest: "{{ golang_install_directory }}"
       mode: '755'
-    tags:
-      - golang
 
   - name: Linux | Extract golang binary
     unarchive:
       src: "{{ golang_install_directory }}/{{ golang_file }}"
       dest: "{{ golang_install_directory }}"
-    tags:
-      - golang
+    when: not ansible_check_mode
 
   - name: Golang cleanup
     file:
       path: "{{ golang_install_directory }}/{{ golang_file }}"
       state: absent
-    tags:
-      - golang
   when: golang_current_version.stdout != golang_version
+  tags:
+    - golang
 
 ###################
 # Install helm
 ###################
 - name: helm | Register the current version (if any)
   shell: "/usr/local/bin/helm version | cut -d '\"' -f 2"
-  ignore_errors: yes
+  ignore_errors: true 
   register: helm_current_version
-  changed_when: false
+  check_mode: false 
   tags:
     - helm
 
@@ -222,6 +233,7 @@
       src: "/tmp/{{ helm_file }}"
       dest: "/tmp/"
       creates: "/tmp/{{ helm_arch }}"
+    when: not ansible_check_mode
     tags:
       - helm
 
@@ -232,6 +244,7 @@
       owner: "{{ lookup('env', 'USER') }}"
       group: "{{ lookup('env', 'USER') }}"
       mode: '755'
+    when: not ansible_check_mode
     tags:
       - helm
 
@@ -254,10 +267,11 @@
 # Install helmfile
 ###################
 - name: helmfile | Register the current version (if any)
-  shell: "/usr/local/bin/helmfile version | cut -d ' ' -f 3"
-  ignore_errors: yes
+  shell: "/usr/local/bin/helmfile --version | cut -d ' ' -f 3"
+  ignore_errors: true 
   register: helmfile_current_version
   changed_when: false
+  check_mode: false
   tags:
     - helmfile
 
@@ -294,7 +308,7 @@
       state: absent
     tags:
       - helmfile
-  when: helmfile_current_version.stdout != helmfile_version
+  when: helmfile_current_version.stdout != helmfile_version and not ansible_check_mode
 
 
 ##################
@@ -348,41 +362,3 @@
     mode: '0644'
   tags:
     - neovim
-
-##################################
-# Install stern - kubernetes logs
-##################################
-- name: stern | Register the current version (if any)
-  shell: "/usr/local/bin/stern --version | cut -d ' ' -f 3"
-  ignore_errors: yes
-  register: stern_current_version
-  changed_when: false
-  tags:
-    - stern
-
-- name: "Check stern version"
-  debug:
-    msg:
-      - "Current stern version is {{ stern_current_version.stdout }}"
-      - "Desired stern version is {{ stern_version }}"
-  tags:
-    - stern
-
-- block:
-  - name: stern | Download
-    get_url:
-      url: https://github.com/wercker/stern/releases/download/{{ stern_version }}/stern_linux_amd64
-      dest: /usr/local/bin/stern
-      mode: '755'
-    tags:
-      - stern
-
-  - name: Set stern permissions
-    file:
-        path: /usr/local/bin/stern
-        owner: "{{ lookup('env', 'USER') }}"
-        group: "{{ lookup('env', 'USER') }}"
-        mode: '0755'
-    tags:
-      - stern
-  when: stern_current_version.stdout != stern_version
