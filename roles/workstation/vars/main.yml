@@ -56,14 +56,6 @@ helmfile_url: "https://github.com/roboll/helmfile/releases/download/{{ helmfile_
 # 1password_file: "op_linux_{{ 1password_arch }}_{{ 1password_release_version }}.zip"
 # 1password_url: "https://cache.agilebits.com/dist/1P/op/pkg/{{ 1password_release_version }}/{{ 1password_file }}"
 
-# golang
-golang_download_location: https://golang.org/dl/
-golang_arch: amd64
-golang_version: go1.16.3
-golang_file: "{{ golang_version }}.linux-{{ golang_arch }}.tar.gz"
-golang_url: https://golang.org/dl/{{ golang_file }}
-golang_install_directory: /usr/local
-
 # docker_compose
 docker_compose_version: 1.27.4
 
