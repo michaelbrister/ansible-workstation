@@ -5,3 +5,5 @@
       name: serverless
       global: yes
       state: present
+  tags:
+    - npm
