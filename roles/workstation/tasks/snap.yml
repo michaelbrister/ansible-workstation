@@ -1,6 +1,6 @@
 ---
 - name: Install snap packages
-  snap:
+  community.general.snap:
     name:
       - kontena-lens
       - intellij-idea-community
