@@ -11,7 +11,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install Ansible-Galaxy Requirements
-        run: ansible-galaxy install -r requirements.yaml
+        run: ansible-galaxy install -r requirements.yml
       - name: List Installed Ansible-Galaxy Requirements
         run: ansible-galaxy collection list
       - name: Run ansible-lint
