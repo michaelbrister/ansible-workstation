@@ -10,5 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Install Ansible-Galaxy Requirements
+        run: ansible-galaxy install -r requirements.yaml
+      - name: List Installed Ansible-Galaxy Requirements
+        run: ansible-galaxy collection list
       - name: Run ansible-lint
         uses: ansible/ansible-lint@main
