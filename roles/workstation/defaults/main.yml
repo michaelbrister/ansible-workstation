@@ -4,7 +4,7 @@
 # golang
 golang_download_location: https://golang.org/dl/
 golang_arch: amd64
-golang_version: go1.22.0
+golang_version: go1.22.1
 golang_file: "{{ golang_version }}.linux-{{ golang_arch }}.tar.gz"
 golang_url: https://golang.org/dl/{{ golang_file }}
 golang_install_directory: /usr/local
