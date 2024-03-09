@@ -246,22 +246,22 @@
   ansible.builtin.get_url:
     url: https://github.com/docker/compose/releases/download/{{ workstation_docker_compose_version }}/docker-compose-Linux-x86_64
     dest: /usr/local/bin/docker-compose
-    mode: 0755
+    mode: '0774'
   tags:
     - docker
 
 - name: Add user to docker group
   ansible.builtin.user:
-      name: "{{ lookup('env', 'USER') }}"
-      group: "{{ lookup('env', 'USER') }}"
+    name: "{{ lookup('env', 'USER') }}"
+    group: "{{ lookup('env', 'USER') }}"
   tags:
     - docker
 
 - name: Add user to docker group
   ansible.builtin.user:
-      name: "{{ lookup('env', 'USER') }}"
-      groups: docker 
-      append: true
+    name: "{{ lookup('env', 'USER') }}"
+    groups: docker
+    append: true
   tags:
     - docker
 
@@ -313,10 +313,10 @@
 
 - name: Set minikube permissions
   ansible.builtin.file:
-      path: /usr/local/bin/minikube
-      owner: "{{ lookup('env', 'USER') }}"
-      group: docker
-      mode: '0755'
+    path: /usr/local/bin/minikube
+    owner: "{{ lookup('env', 'USER') }}"
+    group: docker
+    mode: '0755'
   tags:
     - k8s
 
