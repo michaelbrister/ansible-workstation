@@ -343,7 +343,7 @@
 ##################################
 # Install jwt-cli
 ##################################
-- name: "jwt-cli | Extract archive"
+- name: Extract archive | jwt-cli
   ansible.builtin.unarchive:
     src: https://github.com/mike-engel/jwt-cli/releases/download/4.0.0/jwt-linux.tar.gz
     dest: "/home/{{ lookup('env', 'USER') }}/.local/bin/"
@@ -351,7 +351,7 @@
   tags:
     - jwt-cli
 
-- name: "Set jwt-cli permissions"
+- name: Set jwt-cli permissions
   ansible.builtin.file:
       path: /home/{{ lookup('env', 'USER') }}/.local/bin/jwt
       owner: "{{ lookup('env', 'USER') }}"
@@ -364,7 +364,7 @@
 # Install mage
 # #############
 
-- name: "mage installation"
+- name: Mage installation
   ansible.builtin.unarchive:
     src: "{{ mage_binary_url }}"
     dest: "/usr/local/bin/"

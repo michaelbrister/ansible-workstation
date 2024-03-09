@@ -51,10 +51,10 @@ helmfile_file: helmfile_linux_amd64
 helmfile_url: "https://github.com/roboll/helmfile/releases/download/{{ helmfile_version }}/{{ helmfile_file }}"
 
 # 1password
-1password_arch: "amd64"
-1password_release_version: "v1.6.0"
-1password_file: "op_linux_{{ 1password_arch }}_{{ 1password_release_version }}.zip"
-1password_url: "https://cache.agilebits.com/dist/1P/op/pkg/{{ 1password_release_version }}/{{ 1password_file }}"
+worksstation_1password_arch: "amd64"
+worksstation_1password_release_version: "v1.6.0"
+worksstation_1password_file: "op_linux_{{ 1password_arch }}_{{ 1password_release_version }}.zip"
+worksstation_1password_url: "https://cache.agilebits.com/dist/1P/op/pkg/{{ 1password_release_version }}/{{ 1password_file }}"
 
 # docker_compose
 docker_compose_version: 1.27.4

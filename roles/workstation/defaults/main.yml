@@ -2,9 +2,9 @@
 # defaults file for Work
 
 # golang
-golang_download_location: https://golang.org/dl/
-golang_arch: amd64
-golang_version: go1.22.1
-golang_file: "{{ golang_version }}.linux-{{ golang_arch }}.tar.gz"
-golang_url: https://golang.org/dl/{{ golang_file }}
-golang_install_directory: /usr/local
+worksstation_golang_download_location: https://golang.org/dl/
+worksstation_golang_arch: amd64
+worksstation_golang_version: go1.22.1
+worksstation_golang_file: "{{ worksstation_golang_version  }}.linux-{{ worksstation_golang_arch }}.tar.gz"
+worksstation_golang_url: https://golang.org/dl/{{ worksstation_golang_file }}
+worksstation_golang_install_directory: /usr/local

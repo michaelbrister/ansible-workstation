@@ -1,18 +1,18 @@
 ---
 
 # tasks file for Work
-- name: include base packages
+- name: Include base packages
   import_tasks: debian-packages.yml
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
   tags:
     - packages
 
-- name: include pip modules
+- name: Include pip modules
   import_tasks: pip.yml
   tags:
     - pip
 
-- name: include packages from binaries
+- name: Include packages from binaries
   import_tasks: binaries.yml
   tags:
     - binaries
