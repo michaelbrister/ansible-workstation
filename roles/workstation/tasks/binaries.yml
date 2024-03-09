@@ -169,33 +169,33 @@
   ansible.builtin.debug:
     msg:
       - "Current golang version is {{ golang_current_version.stdout }}"
-      - "Desired golang version is {{ golang_version }}"
+      - "Desired golang version is {{ workstation_golang_version }}"
   tags:
     - golang
 
 - block:
     - name: Delete old golang version
       ansible.builtin.file:
-        path: "{{ worksstation_golang_install_directory}}/go"
+        path: "{{ workstation__golang_install_directory}}/go"
         state: absent
 
     - name: Install golang
       ansible.builtin.get_url:
-        url: "{{ worksstation_golang_url }}"
-        dest: "{{ worksstation_golang_install_directory }}"
+        url: "{{ workstation__golang_url }}"
+        dest: "{{ workstation__golang_install_directory }}"
         mode: "755"
 
     - name: Linux | Extract golang binary
       ansible.builtin.unarchive:
-        src: "{{ worksstation_golang_install_directory }}/{{ worksstation_golang_file }}"
-        dest: "{{ worksstation_golang_install_directory }}"
+        src: "{{ workstation__golang_install_directory }}/{{ workstation__golang_file }}"
+        dest: "{{ workstation__golang_install_directory }}"
       when: not ansible_check_mode
 
     - name: Golang cleanup
       ansible.builtin.file:
-        path: "{{ worksstation_golang_install_directory }}/{{ worksstation_golang_file }}"
+        path: "{{ workstation__golang_install_directory }}/{{ workstation__golang_file }}"
         state: absent
-  when: golang_current_version.stdout != golang_version
+  when: golang_current_version.stdout != workstation_golang_version
   tags:
     - golang
 

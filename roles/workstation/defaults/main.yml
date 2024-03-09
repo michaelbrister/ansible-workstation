@@ -5,6 +5,6 @@
 worksstation_golang_download_location: https://golang.org/dl/
 worksstation_golang_arch: amd64
 worksstation_golang_version: go1.22.1
-worksstation_golang_file: "{{ worksstation_golang_version  }}.linux-{{ worksstation_golang_arch }}.tar.gz"
+worksstation_golang_file: "{{ worksstation_golang_version }}.linux-{{ worksstation_golang_arch }}.tar.gz"
 worksstation_golang_url: https://golang.org/dl/{{ worksstation_golang_file }}
 worksstation_golang_install_directory: /usr/local
