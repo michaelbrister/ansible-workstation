@@ -7,7 +7,7 @@
   ansible.builtin.file:
     path: "{{ workstation_terraform_path }}"
     state: directory
-    mode: "0774"
+    mode: '0774'
   tags:
     - terraform
 
@@ -15,7 +15,7 @@
   ansible.builtin.file:
     path: "{{ workstation_terraform_version_dir }}"
     state: directory
-    mode: "0774"
+    mode: '0774'
   tags:
     - terraform
 
@@ -119,12 +119,12 @@
     path: "/usr/local/bin/terragrunt"
     owner: "{{ lookup('env', 'USER') }}"
     group: "{{ lookup('env', 'USER') }}"
-    mode: "0755"
+    mode: '0755'
   tags:
     - terragrunt
 
 - name: Terragrunt | Check binary version
-  ansible.builtin.shell: "terragrunt --version | cut -d ' ' -f3"
+  ansible.builtin.shell: "set -o pipefail && terragrunt --version | cut -d ' ' -f3"
   args:
     executable: /bin/bash
   register: terragrunt_bin_version
@@ -176,6 +176,7 @@
     - golang
 
 - name: Golang
+  when: golang_current_version.stdout != workstation_golang_version
   block:
     - name: Delete old golang version
       ansible.builtin.file:
@@ -186,7 +187,7 @@
       ansible.builtin.get_url:
         url: "{{ workstation__golang_url }}"
         dest: "{{ workstation__golang_install_directory }}"
-        mode: "0755"
+        mode: '0755'
 
     - name: Linux | Extract golang binary
       ansible.builtin.unarchive:
@@ -198,7 +199,6 @@
       ansible.builtin.file:
         path: "{{ workstation__golang_install_directory }}/{{ workstation__golang_file }}"
         state: absent
-  when: golang_current_version.stdout != workstation_golang_version
   tags:
     - golang
 
@@ -222,12 +222,13 @@
     - helm
 
 - name: Helm
+  when: helm_current_version.stdout != helm_version
   block:
     - name: Helm | Download
       ansible.builtin.get_url:
         url: "{{ helm_url }}"
         dest: /tmp/{{ helm_file }}
-        mode: "0755"
+        mode: '0755'
       tags:
         - helm
 
@@ -246,7 +247,7 @@
         dest: "/usr/local/bin/helm"
         owner: "{{ lookup('env', 'USER') }}"
         group: "{{ lookup('env', 'USER') }}"
-        mode: "0755"
+        mode: '0755'
       when: not ansible_check_mode
       tags:
         - helm
@@ -264,7 +265,6 @@
         state: absent
       tags:
         - helm
-  when: helm_current_version.stdout != helm_version
 
 ###################
 # Install helmfile
@@ -287,12 +287,13 @@
     - helmfile
 
 - name: Helmfile
+  when: helmfile_current_version.stdout != helmfile_version and not ansible_check_mode
   block:
     - name: Helmfile | Download
       ansible.builtin.get_url:
         url: "{{ helmfile_url }}"
         dest: /tmp/{{ helmfile_file }}
-        mode: "755"
+        mode: '0755'
       tags:
         - helmfile
 
@@ -302,7 +303,7 @@
         dest: "/usr/local/bin/helmfile"
         owner: "{{ lookup('env', 'USER') }}"
         group: "{{ lookup('env', 'USER') }}"
-        mode: "755"
+        mode: '0755'
       tags:
         - helmfile
 
@@ -312,7 +313,6 @@
         state: absent
       tags:
         - helmfile
-  when: helmfile_current_version.stdout != helmfile_version and not ansible_check_mode
 
 ##################
 # Install neovim
@@ -324,7 +324,7 @@
     state: directory
     owner: "{{ lookup('env', 'USER') }}"
     group: "{{ lookup('env', 'USER') }}"
-    mode: "0775"
+    mode: '0775'
   tags:
     - neovim
 
@@ -338,7 +338,7 @@
     dest: /home/{{ lookup('env', 'USER') }}/.config/nvim/init.vim
     owner: "{{ lookup('env', 'USER') }}"
     group: "{{ lookup('env', 'USER') }}"
-    mode: "0664"
+    mode: '0664'
   tags:
     - neovim
 
@@ -362,6 +362,6 @@
     dest: /home/{{ lookup('env', 'USER') }}/.zshrc
     owner: "{{ lookup('env', 'USER') }}"
     group: "{{ lookup('env', 'USER') }}"
-    mode: "0644"
+    mode: '0644'
   tags:
     - neovim
