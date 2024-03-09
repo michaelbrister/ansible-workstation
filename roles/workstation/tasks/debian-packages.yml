@@ -151,7 +151,7 @@
   ansible.builtin.file:
     path: /home/{{ lookup('env', 'USER') }}/.config/1Password/ssh
     state: directory
-    recurse: yes
+    recurse: true
     mode: '0700'
   tags:
     - 1password
@@ -178,7 +178,7 @@
 
 - name: Install hashicorp packer
   ansible.builtin.apt:
-    update_cache: yes
+    update_cache: true
     name: packer
     state: present
   tags:
@@ -198,14 +198,14 @@
 - name: Add sublimetext repository
   ansible.builtin.apt_repository:
     repo: "deb [arch=amd64] https://download.sublimetext.com/ apt/stable/"
-    filename: sublime 
+    filename: sublime
     state: present
   tags:
     - sublime-text
 
 - name: Install sublimetext & sublime merge
   ansible.builtin.apt:
-    update_cache: yes
+    update_cache: true
     name: "{{ packages }}"
     state: present
   vars:
@@ -228,7 +228,7 @@
 
 - name: Add docker repository
   ansible.builtin.apt_repository:
-    update_cache: yes
+    update_cache: true
     repo: deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
     filename: docker
     state: present
@@ -347,7 +347,7 @@
   ansible.builtin.unarchive:
     src: https://github.com/mike-engel/jwt-cli/releases/download/4.0.0/jwt-linux.tar.gz
     dest: "/home/{{ lookup('env', 'USER') }}/.local/bin/"
-    remote_src: yes
+    remote_src: true
   tags:
     - jwt-cli
 
@@ -370,6 +370,6 @@
     dest: "/usr/local/bin/"
     include: 
     - mage
-    remote_src: yes
+    remote_src: true
   tags:
     - mage
