@@ -7,6 +7,7 @@
   ansible.builtin.file:
     path: "{{ workstation_terraform_path }}"
     state: directory
+    mode: '0774'
   tags:
     - terraform
 
@@ -14,6 +15,7 @@
   ansible.builtin.file:
     path: "{{ workstation_terraform_version_dir }}"
     state: directory
+    mode: '0774'
   tags:
     - terraform
 
@@ -117,7 +119,7 @@
     path: "/usr/local/bin/terragrunt"
     owner: "{{ lookup('env', 'USER') }}"
     group: "{{ lookup('env', 'USER') }}"
-    mode: "755"
+    mode: "0755"
   tags:
     - terragrunt
 
@@ -176,7 +178,7 @@
 - block:
     - name: Delete old golang version
       ansible.builtin.file:
-        path: "{{ workstation__golang_install_directory}}/go"
+        path: "{{ workstation_golang_install_directory }}/go"
         state: absent
 
     - name: Install golang
