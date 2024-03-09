@@ -32,6 +32,7 @@
     url: "{{ workstation_terraform_url }}"
     dest: "{{ workstation_terraform_version_dir }}/{{ workstation_terraform_file }}"
     checksum: "{{ workstation_terraform_checksum }}"
+    mode: '0664'
   when: not terraform_bin_st.stat.exists and not ansible_check_mode
   tags:
     - terraform
@@ -177,6 +178,8 @@
 
 - name: Golang
   when: golang_current_version.stdout != workstation_golang_version
+  tags:
+    - golang
   block:
     - name: Delete old golang version
       ansible.builtin.file:
@@ -199,8 +202,6 @@
       ansible.builtin.file:
         path: "{{ workstation__golang_install_directory }}/{{ workstation__golang_file }}"
         state: absent
-  tags:
-    - golang
 
 ###################
 # Install helm
