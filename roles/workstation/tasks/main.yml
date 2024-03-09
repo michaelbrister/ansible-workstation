@@ -2,28 +2,28 @@
 
 # tasks file for Work
 - name: Include base packages
-  import_tasks: debian-packages.yml
+  ansible.builtin.import_tasks: debian-packages.yml
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
   tags:
     - packages
 
 - name: Include pip modules
-  import_tasks: pip.yml
+  ansible.builtin.import_tasks: pip.yml
   tags:
     - pip
 
 - name: Include packages from binaries
-  import_tasks: binaries.yml
+  ansible.builtin.import_tasks: binaries.yml
   tags:
     - binaries
 
 - name: Include snap packages
-  import_tasks: snap.yml
+  ansible.builtin.import_tasks: snap.yml
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
   tags:
     - snap
 
 - name: Include npm packages
-  import_tasks: npm.yml
+  ansible.builtin.import_tasks: npm.yml
   tags:
     - npm
