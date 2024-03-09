@@ -2,14 +2,14 @@
 # Install pip modules
 
 - name: pip | self-update
-  pip:
+  ansible.builtin.pip:
     name: pip
     state: latest
   tags:
     - pip
 
 - name: pip | install packages
-  pip:
+  ansible.builtin.pip:
     name:
       - ansible==2.10.4
       - ansible-base==2.10.4
