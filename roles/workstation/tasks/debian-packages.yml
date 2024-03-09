@@ -244,7 +244,7 @@
 
 - name: Install docker-compose
   ansible.builtin.get_url:
-    url: https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-Linux-x86_64
+    url: https://github.com/docker/compose/releases/download/{{ workstation_docker_compose_version }}/docker-compose-Linux-x86_64
     dest: /usr/local/bin/docker-compose
     mode: 0755
   tags:
@@ -326,7 +326,7 @@
 
 - name: Install Open Lens
   ansible.builtin.apt:
-    deb: "{{ open_lens_url }}"
+    deb: "{{ workstation_open_lens_url }}"
   tags:
     - lens
 
@@ -336,7 +336,7 @@
 
 - name: Install mozilla sops
   ansible.builtin.apt:
-    deb: "{{ sops_url }}"
+    deb: "{{ workstation_sops_url }}"
   tags:
     - sops
 
@@ -366,7 +366,7 @@
 
 - name: Mage installation
   ansible.builtin.unarchive:
-    src: "{{ mage_binary_url }}"
+    src: "{{ workstation_mage_binary_url }}"
     dest: "/usr/local/bin/"
     include: 
     - mage

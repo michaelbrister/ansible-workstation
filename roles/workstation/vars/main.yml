@@ -1,77 +1,77 @@
 ---
 
-terraform_arch: "amd64"
-terraform_system: "linux"
-terraform_version: "1.7.4"
-terraform_file: "terraform_{{ terraform_version }}_{{ terraform_system }}_{{ terraform_arch }}.zip"
-terraform_url: "https://releases.hashicorp.com/terraform/{{ terraform_version }}/{{ terraform_file }}"
-terraform_checksum: "sha256:285539a6fd62fb79f05edc15cc207ca90f282901c32261085ea0642a0d638dfd"
-terraform_bin_dir: /usr/local/bin
-terraform_bin: "{{ terraform_bin_dir }}/terraform"
-terraform_path: "/opt/terraform"
-terraform_version_dir: "{{ terraform_path }}/{{ terraform_version }}"
-terraform_version_bin: "{{ terraform_version_dir }}/terraform"
+workstation_terraform_arch: "amd64"
+workstation_terraform_system: "linux"
+workstation_terraform_version: "1.7.4"
+workstation_terraform_file: "terraform_{{ workstation_terraform_version }}_{{ workstation_terraform_system }}_{{ workstation_terraform_arch }}.zip"
+workstation_terraform_url: "https://releases.hashicorp.com/terraform/{{ workstation_terraform_version }}/{{ workstation_terraform_file }}"
+workstation_terraform_checksum: "sha256:285539a6fd62fb79f05edc15cc207ca90f282901c32261085ea0642a0d638dfd"
+workstation_terraform_bin_dir: /usr/local/bin
+workstation_terraform_bin: "{{ terraform_bin_dir }}/terraform"
+workstation_terraform_path: "/opt/terraform"
+workstation_terraform_version_dir: "{{ workstation_terraform_path }}/{{ workstation_terraform_version }}"
+workstation_terraform_version_bin: "{{ workstation_terraform_version_dir }}/terraform"
 
 # terragrunt
-terragrunt_arch: "amd64"
-terragrunt_system: "linux"
-terragrunt_version: "0.36.2"
-terragrunt_file: "terragrunt_{{ terragrunt_system }}_{{ terragrunt_arch }}"
-terragrunt_url: "https://github.com/gruntwork-io/terragrunt/releases/download/v{{ terragrunt_version }}/{{ terragrunt_file }}"
-terragrunt_checksum: "sha256:931b19970cd8962b2af361f58a41bdce3cc75153c39c4cf14c5992ea09a19cb2"
-terragrunt_bin_dir: /usr/local/bin
+workstation_terragrunt_arch: "amd64"
+workstation_terragrunt_system: "linux"
+workstation_terragrunt_version: "0.36.2"
+workstation_terragrunt_file: "terragrunt_{{ workstation_terragrunt_system }}_{{ workstation_terragrunt_arch }}"
+workstation_terragrunt_url: "https://github.com/gruntwork-io/terragrunt/releases/download/v{{ workstation_terragrunt_version }}/{{ workstation_terragrunt_file }}"
+workstation_terragrunt_checksum: "sha256:931b19970cd8962b2af361f58a41bdce3cc75153c39c4cf14c5992ea09a19cb2"
+workstation_terragrunt_bin_dir: /usr/local/bin
 
 # minikube
-minikube_arch: "amd64"
-minikube_version: "v1.12.0"
-minikube_release_version: "v1.12.0-0"
-minikube_file: "minikube_{{ minikube_release_version }}_{{ minikube_arch }}.deb"
-minikube_url: "https://github.com/kubernetes/minikube/releases/download/{{ minikube_version }}/{{ minikube_file }}"
+workstation_minikube_arch: "amd64"
+workstation_minikube_version: "v1.12.0"
+workstation_minikube_release_version: "v1.12.0-0"
+workstation_minikube_file: "minikube_{{ workstation_minikube_release_version }}_{{ workstation_workstation_minikube_arch }}.deb"
+workstation_minikube_url: "https://github.com/kubernetes/minikube/releases/download/{{ workstation_minikube_version }}/{{ workstation_minikube_file }}"
 
-docker_machine_arch: "amd64"
-docker_machine_version: "v1.12.0"
-docker_machine_release_version: "v1.12.0-0"
-docker_machine_driver_file: "docker-machine-driver-kvm2_{{ docker_machine_release_version }}_{{ docker_machine_arch }}.deb"
-docker_machine_driver_url: "https://github.com/kubernetes/minikube/releases/download/{{ docker_machine_version }}/{{ docker_machine_driver_file }}"
-docker_machine_driver_checksum: "fabd7a19c8cca563e32321f070311d70404311602e5c9db17b556c0812d1c899"
+workstation_docker_machine_arch: "amd64"
+workstation_docker_machine_version: "v1.12.0"
+workstation_docker_machine_release_version: "v1.12.0-0"
+workstation_docker_machine_driver_file: "docker-machine-driver-kvm2_{{ workstation_docker_machine_release_version }}_{{ workstation_docker_machine_arch }}.deb"
+workstation_docker_machine_driver_url: "https://github.com/kubernetes/minikube/releases/download/{{ workstation_docker_machine_version }}/{{ workstation_docker_machine_driver_file }}"
+workstation_docker_machine_driver_checksum: "fabd7a19c8cca563e32321f070311d70404311602e5c9db17b556c0812d1c899"
 
 # helm
-helm_arch: "linux-amd64"
-helm_version: "v3.8.2"
-helm_file: "helm-{{ helm_version }}-{{ helm_arch }}.tar.gz"
-helm_folder: "/tmp/{{ helm_arch }}"
-helm_url: https://get.helm.sh/{{ helm_file }}
-helm_checksum: cacde7768420dd41111a4630e047c231afa01f67e49cc0c6429563e024da4b98
+workstation_helm_arch: "linux-amd64"
+workstation_helm_version: "v3.8.2"
+workstation_helm_file: "helm-{{ workstation_helm_version }}-{{ workstation_helm_arch }}.tar.gz"
+workstation_helm_folder: "/tmp/{{ workstation_helm_arch }}"
+workstation_helm_url: https://get.helm.sh/{{ workstation_helm_file }}
+workstation_helm_checksum: cacde7768420dd41111a4630e047c231afa01f67e49cc0c6429563e024da4b98
 
 # helmfile
-helmfile_arch: linux_amd64
-helmfile_version: v0.148.1
-helmfile_folder: "/tmp/"
-helmfile_file: helmfile_linux_amd64
-helmfile_url: "https://github.com/roboll/helmfile/releases/download/{{ helmfile_version }}/{{ helmfile_file }}"
+workstation_helmfile_arch: linux_amd64
+workstation_helmfile_version: v0.148.1
+workstation_helmfile_folder: "/tmp/"
+workstation_helmfile_file: helmfile_linux_amd64
+workstation_helmfile_url: "https://github.com/roboll/helmfile/releases/download/{{ workstation_helmfile_version }}/{{ workstation_helmfile_file }}"
 
 # 1password
 worksstation_1password_arch: "amd64"
 worksstation_1password_release_version: "v1.6.0"
-worksstation_1password_file: "op_linux_{{ 1password_arch }}_{{ 1password_release_version }}.zip"
-worksstation_1password_url: "https://cache.agilebits.com/dist/1P/op/pkg/{{ 1password_release_version }}/{{ 1password_file }}"
+worksstation_1password_file: "op_linux_{{ workstation_1password_arch }}_{{ workstation_1password_release_version }}.zip"
+worksstation_1password_url: "https://cache.agilebits.com/dist/1P/op/pkg/{{ workstation_1password_release_version }}/{{ workstation_1password_file }}"
 
 # docker_compose
-docker_compose_version: 1.27.4
+workstation_docker_compose_version: 1.27.4
 
 # fast node manager
-fnm_version: 1.35.1
-fnm_node_versions:
+workstation_fnm_version: 1.35.1
+workstation_fnm_node_versions:
   - 20.11.1
 
 # lens
-open_lens_url: https://github.com/MuhammedKalkan/OpenLens/releases/download/v{{ open_lens_version }}/OpenLens-{{ open_lens_version }}.amd64.deb
-open_lens_version: 6.4.15
+workstation_open_lens_url: https://github.com/MuhammedKalkan/OpenLens/releases/download/v{{ workstation_open_lens_version }}/OpenLens-{{ workstation_open_lens_version }}.amd64.deb
+workstation_open_lens_version: 6.4.15
 
 # mage
-mage_binary_url: https://github.com/magefile/mage/releases/download/v1.14.0/mage_1.14.0_Linux-64bit.tar.gz
+workstation_mage_binary_url: https://github.com/magefile/mage/releases/download/v1.14.0/mage_1.14.0_Linux-64bit.tar.gz
 
 # sops - encrypt terraform
-sops_version: 3.7.2
-sops_arch: amd64
-sops_url: https://github.com/mozilla/sops/releases/download/v{{ sops_version }}/sops_{{ sops_version}}_{{ sops_arch }}.deb
+workstation_sops_version: 3.7.2
+workstation_sops_arch: amd64
+workstation_sops_url: https://github.com/mozilla/sops/releases/download/v{{ workstation_sops_version }}/sops_{{ workstation_sops_version }}_{{ workstation_sops_arch }}.deb

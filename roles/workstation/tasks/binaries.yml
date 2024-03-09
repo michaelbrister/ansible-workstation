@@ -5,21 +5,21 @@
 
 - name: Terraform | Create Terraform directory
   ansible.builtin.file:
-    path: "{{ terraform_path }}"
+    path: "{{ workstation_terraform_path }}"
     state: directory
   tags:
     - terraform
 
 - name: Terraform | Create Terraform version directory
   ansible.builtin.file:
-    path: "{{ terraform_version_dir }}"
+    path: "{{ workstation_terraform_version_dir }}"
     state: directory
   tags:
     - terraform
 
 - name: Terraform | Check if terraform binary exists
   ansible.builtin.stat:
-    path: "{{ terraform_version_bin }}"
+    path: "{{ workstation_terraform_version_bin }}"
   register: terraform_bin_st
   check_mode: false
   tags:
@@ -27,33 +27,33 @@
 
 - name: Terraform | Download Terraform release
   ansible.builtin.get_url:
-    url: "{{ terraform_url }}"
-    dest: "{{ terraform_version_dir }}/{{ terraform_file }}"
-    checksum: "{{ terraform_checksum }}"
+    url: "{{ workstation_terraform_url }}"
+    dest: "{{ workstation_terraform_version_dir }}/{{ workstation_terraform_file }}"
+    checksum: "{{ workstation_terraform_checksum }}"
   when: not terraform_bin_st.stat.exists and not ansible_check_mode
   tags:
     - terraform
 
 - name: Terraform | Extract Terraform binary
   ansible.builtin.unarchive:
-    src: "{{ terraform_version_dir }}/{{ terraform_file }}"
-    dest: "{{ terraform_version_dir }}"
-    creates: "{{ terraform_version_bin }}"
+    src: "{{ workstation_terraform_version_dir }}/{{ workstation_terraform_file }}"
+    dest: "{{ workstation_terraform_version_dir }}"
+    creates: "{{ workstation_terraform_version_bin }}"
   when: not terraform_bin_st.stat.exists and not ansible_check_mode
   tags:
     - terraform
 
 - name: Terraform | Cleanup
   ansible.builtin.file:
-    path: "{{ terraform_version_dir }}/{{ terraform_file }}"
+    path: "{{ workstation_terraform_version_dir }}/{{ workstation_terraform_file }}"
     state: absent
   tags:
     - terraform
 
 - name: Terraform | Symlink terraform to /usr/local/bin
   ansible.builtin.file:
-    src: "{{ terraform_version_bin }}"
-    dest: "{{ terraform_bin }}"
+    src: "{{ workstation_terraform_version_bin }}"
+    dest: "{{ workstation_terraform_bin }}"
     state: link
   when: not ansible_check_mode
   tags:
@@ -61,7 +61,7 @@
 
 - name: Terraform | Cleanup legacy binaries
   ansible.builtin.file:
-    path: "{{ terraform_path }}/terraform"
+    path: "{{ workstation_terraform_path }}/terraform"
     state: absent
   tags:
     - terraform
@@ -105,9 +105,9 @@
 
 - name: Terragrunt | Download Terragrunt release
   ansible.builtin.get_url:
-    url: "{{ terragrunt_url }}"
+    url: "{{ workstation_terragrunt_url }}"
     dest: "/usr/local/bin/terragrunt"
-    checksum: "{{ terragrunt_checksum }}"
+    checksum: "{{ workstation_terragrunt_checksum }}"
   when: not terragrunt_bin_st.stat.exists
   tags:
     - terragrunt
