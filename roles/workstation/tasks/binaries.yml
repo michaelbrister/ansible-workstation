@@ -7,7 +7,7 @@
   ansible.builtin.file:
     path: "{{ workstation_terraform_path }}"
     state: directory
-    mode: '0774'
+    mode: "0774"
   tags:
     - terraform
 
@@ -15,7 +15,7 @@
   ansible.builtin.file:
     path: "{{ workstation_terraform_version_dir }}"
     state: directory
-    mode: '0774'
+    mode: "0774"
   tags:
     - terraform
 
@@ -119,7 +119,7 @@
     path: "/usr/local/bin/terragrunt"
     owner: "{{ lookup('env', 'USER') }}"
     group: "{{ lookup('env', 'USER') }}"
-    mode: "0  755"
+    mode: "0755"
   tags:
     - terragrunt
 
@@ -186,7 +186,7 @@
       ansible.builtin.get_url:
         url: "{{ workstation__golang_url }}"
         dest: "{{ workstation__golang_install_directory }}"
-        mode: "755"
+        mode: "0755"
 
     - name: Linux | Extract golang binary
       ansible.builtin.unarchive:
@@ -227,7 +227,7 @@
       ansible.builtin.get_url:
         url: "{{ helm_url }}"
         dest: /tmp/{{ helm_file }}
-        mode: "755"
+        mode: "0755"
       tags:
         - helm
 
@@ -246,7 +246,7 @@
         dest: "/usr/local/bin/helm"
         owner: "{{ lookup('env', 'USER') }}"
         group: "{{ lookup('env', 'USER') }}"
-        mode: "755"
+        mode: "0755"
       when: not ansible_check_mode
       tags:
         - helm
@@ -343,12 +343,12 @@
     - neovim
 
 - name: Install vim-plug
-  ansible.builtin.shell: sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  ansible.builtin.shell: set -o pipefail && sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
   tags:
     - neovim
 
 - name: Install nvim plugins
-  ansible.builtin.shell: nvim +PlugInstall --sync +qall &> /dev/null < /dev/tty
+  ansible.builtin.shell: set -o pipefail && nvim +PlugInstall --sync +qall &> /dev/null < /dev/tty
   tags:
     - neovim
 
