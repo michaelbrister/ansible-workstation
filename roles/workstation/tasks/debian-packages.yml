@@ -246,7 +246,7 @@
   ansible.builtin.get_url:
     url: https://github.com/docker/compose/releases/download/{{ workstation_docker_compose_version }}/docker-compose-Linux-x86_64
     dest: /usr/local/bin/docker-compose
-    mode: '0774'
+    mode: '0774 '
   tags:
     - docker
 
@@ -353,23 +353,22 @@
 
 - name: Set jwt-cli permissions
   ansible.builtin.file:
-      path: /home/{{ lookup('env', 'USER') }}/.local/bin/jwt
-      owner: "{{ lookup('env', 'USER') }}"
-      group: "{{ lookup('env', 'USER') }}"
-      mode: '0755'
+    path: /home/{{ lookup('env', 'USER') }}/.local/bin/jwt
+    owner: "{{ lookup('env', 'USER') }}"
+    group: "{{ lookup('env', 'USER') }}"
+    mode: '0755'
   tags:
     - jwt-cli
 
 ##############
 # Install mage
 # #############
-
 - name: Mage installation
   ansible.builtin.unarchive:
     src: "{{ workstation_mage_binary_url }}"
     dest: "/usr/local/bin/"
     include: 
-    - mage
+      - mage
     remote_src: true
   tags:
     - mage
