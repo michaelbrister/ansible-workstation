@@ -367,7 +367,7 @@
   ansible.builtin.unarchive:
     src: "{{ workstation_mage_binary_url }}"
     dest: "/usr/local/bin/"
-    include: 
+    include:
       - mage
     remote_src: true
   tags:
