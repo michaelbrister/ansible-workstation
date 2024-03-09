@@ -2,8 +2,8 @@
 
 - name: NPM Install serverless
   community.general.npm:
-      name: serverless
-      global: yes
-      state: present
+    name: serverless
+    global: true
+    state: present
   tags:
     - npm

@@ -6,4 +6,4 @@
       - intellij-idea-community
       - slack
       - yq
-    classic: yes
+    classic: true
