@@ -2,7 +2,7 @@
 
 - name: Update apt packages
   ansible.builtin.apt:
-    update_cache: yes
+    update_cache: true
     cache_valid_time: 86400 # One day
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
@@ -70,7 +70,7 @@
 
 - name: Install pgamdin4
   ansible.builtin.apt:
-    update_cache: yes
+    update_cache: true
     name: pgadmin4
     state: present
   tags:
@@ -91,7 +91,7 @@
     - 1password
 
 - name: De-Armor Docker GPG key
-  ansible.builtin.command:  gpg --dearmor < /tmp/1password.asc > /usr/share/keyrings/1password-archive-keyring.gpg
+  ansible.builtin.command: gpg --dearmor < /tmp/1password.asc > /usr/share/keyrings/1password-archive-keyring.gpg
   changed_when: false
   become: true
   no_log: true
@@ -112,7 +112,7 @@
     force: true
   tags:
     - 1password
-    
+
 - name: Add the debsig-verify policy
   ansible.builtin.get_url:
     url: https://downloads.1password.com/linux/debian/debsig/1password.pol

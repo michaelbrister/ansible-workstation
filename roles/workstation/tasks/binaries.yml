@@ -111,6 +111,7 @@
     url: "{{ workstation_terragrunt_url }}"
     dest: "/usr/local/bin/terragrunt"
     checksum: "{{ workstation_terragrunt_checksum }}"
+    mode: "0664"
   when: not terragrunt_bin_st.stat.exists
   tags:
     - terragrunt
