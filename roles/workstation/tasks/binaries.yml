@@ -119,7 +119,7 @@
     path: "/usr/local/bin/terragrunt"
     owner: "{{ lookup('env', 'USER') }}"
     group: "{{ lookup('env', 'USER') }}"
-    mode: "0755"
+    mode: "0  755"
   tags:
     - terragrunt
 
@@ -175,7 +175,8 @@
   tags:
     - golang
 
-- block:
+- name: Golang
+  block:
     - name: Delete old golang version
       ansible.builtin.file:
         path: "{{ workstation_golang_install_directory }}/go"
@@ -220,7 +221,8 @@
   tags:
     - helm
 
-- block:
+- name: Helm
+  block:
     - name: Helm | Download
       ansible.builtin.get_url:
         url: "{{ helm_url }}"
@@ -284,7 +286,8 @@
   tags:
     - helmfile
 
-- block:
+- name: Helmfile
+  block:
     - name: Helmfile | Download
       ansible.builtin.get_url:
         url: "{{ helmfile_url }}"
