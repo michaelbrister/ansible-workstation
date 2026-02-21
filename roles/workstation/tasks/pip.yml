@@ -4,7 +4,7 @@
 - name: PIP | self-update
   ansible.builtin.pip:
     name: pip
-    state: latest
+    state: present
   tags:
     - pip
 

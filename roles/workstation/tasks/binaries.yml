@@ -22,7 +22,7 @@
 - name: Terraform | Check if terraform binary exists
   ansible.builtin.stat:
     path: "{{ workstation_terraform_version_bin }}"
-  register: terraform_bin_st
+  register: workstation_terraform_bin_st
   check_mode: false
   tags:
     - terraform
@@ -33,7 +33,7 @@
     dest: "{{ workstation_terraform_version_dir }}/{{ workstation_terraform_file }}"
     checksum: "{{ workstation_terraform_checksum }}"
     mode: '0664'
-  when: not terraform_bin_st.stat.exists and not ansible_check_mode
+  when: not workstation_terraform_bin_st.stat.exists and not ansible_check_mode
   tags:
     - terraform
 
@@ -42,7 +42,7 @@
     src: "{{ workstation_terraform_version_dir }}/{{ workstation_terraform_file }}"
     dest: "{{ workstation_terraform_version_dir }}"
     creates: "{{ workstation_terraform_version_bin }}"
-  when: not terraform_bin_st.stat.exists and not ansible_check_mode
+  when: not workstation_terraform_bin_st.stat.exists and not ansible_check_mode
   tags:
     - terraform
 
@@ -73,7 +73,7 @@
   ansible.builtin.shell: "set -o pipefail && terraform --version | grep '^Terraform v'"
   args:
     executable: /bin/bash
-  register: terraform_bin_version
+  register: workstation_terraform_bin_version
   changed_when: false
   check_mode: false
   when: not ansible_check_mode
@@ -82,14 +82,15 @@
 
 - name: Terraform | Terraform version
   ansible.builtin.set_fact:
-    terraform_installed_version: "{{ terraform_bin_version.stdout | replace('Terraform v', '') }}"
+    workstation_terraform_installed_version: >-
+      {{ workstation_terraform_bin_version.stdout | replace('Terraform v', '') }}
   when: not ansible_check_mode
   tags:
     - terraform
 
 - name: Terraform | Check that Terraform version is installed correctly
   ansible.builtin.assert:
-    that: "terraform_installed_version == workstation_terraform_version"
+    that: "workstation_terraform_installed_version == workstation_terraform_version"
   when: not ansible_check_mode
   tags:
     - terraform
@@ -101,7 +102,7 @@
 - name: Terragrunt | Check if terraform binary exists
   ansible.builtin.stat:
     path: "/usr/local/bin/terragrunt"
-  register: terragrunt_bin_st
+  register: workstation_terragrunt_bin_st
   check_mode: false
   tags:
     - terragrunt
@@ -112,7 +113,7 @@
     dest: "/usr/local/bin/terragrunt"
     checksum: "{{ workstation_terragrunt_checksum }}"
     mode: "0664"
-  when: not terragrunt_bin_st.stat.exists
+  when: not workstation_terragrunt_bin_st.stat.exists
   tags:
     - terragrunt
 
@@ -129,7 +130,7 @@
   ansible.builtin.shell: "set -o pipefail && terragrunt --version | cut -d ' ' -f3"
   args:
     executable: /bin/bash
-  register: terragrunt_bin_version
+  register: workstation_terragrunt_bin_version
   changed_when: false
   check_mode: false
   tags:
@@ -137,21 +138,22 @@
 
 - name: Terragrunt | Terragrunt version
   ansible.builtin.set_fact:
-    terragrunt_installed_version: "{{ terragrunt_bin_version.stdout | replace('v', '') }}"
+    workstation_terragrunt_installed_version: >-
+      {{ workstation_terragrunt_bin_version.stdout | replace('v', '') }}
   tags:
     - terragrunt
 
 - name: Terragrunt | check version
   ansible.builtin.debug:
     msg:
-      - "Current terragrunt version {{ terragrunt_installed_version }}"
+      - "Current terragrunt version {{ workstation_terragrunt_installed_version }}"
       - "Desired terragrunt version {{ workstation_terragrunt_version }}"
   tags:
     - terragrunt
 
 - name: Terragrunt | Check that Terragrunt version is installed correctly
   ansible.builtin.assert:
-    that: "terragrunt_installed_version == workstation_terragrunt_version"
+    that: "workstation_terragrunt_installed_version == workstation_terragrunt_version"
   when: not ansible_check_mode
   tags:
     - terragrunt
@@ -163,7 +165,7 @@
 - name: Register the current Go version (if any)
   ansible.builtin.shell: "{{ workstation__golang_install_directory }}/go/bin/go version | cut -d ' ' -f3"
   ignore_errors: true
-  register: golang_current_version
+  register: workstation_golang_current_version
   changed_when: false
   check_mode: false
   tags:
@@ -172,13 +174,13 @@
 - name: Golang | check version
   ansible.builtin.debug:
     msg:
-      - "Current golang version is {{ golang_current_version.stdout }}"
+      - "Current golang version is {{ workstation_golang_current_version.stdout }}"
       - "Desired golang version is {{ workstation__golang_version }}"
   tags:
     - golang
 
 - name: Golang
-  when: golang_current_version.stdout != workstation__golang_version
+  when: workstation_golang_current_version.stdout != workstation__golang_version
   tags:
     - golang
   block:
@@ -210,7 +212,8 @@
 - name: Helm | Register the current version (if any)
   ansible.builtin.shell: '/usr/local/bin/helm version | cut -d ''"'' -f 2'
   ignore_errors: true
-  register: helm_current_version
+  register: workstation_helm_current_version
+  changed_when: false
   check_mode: false
   tags:
     - helm
@@ -218,13 +221,13 @@
 - name: Helm | check version
   ansible.builtin.debug:
     msg:
-      - "Current helm version is {{ helm_current_version.stdout }}"
+      - "Current helm version is {{ workstation_helm_current_version.stdout }}"
       - "Desired helm version is {{ workstation_helm_version }}"
   tags:
     - helm
 
 - name: Helm
-  when: helm_current_version.stdout != workstation_helm_version
+  when: workstation_helm_current_version.stdout != workstation_helm_version
   block:
     - name: Helm | Download
       ansible.builtin.get_url:
@@ -274,7 +277,7 @@
 - name: Helmfile | Register the current version (if any)
   ansible.builtin.shell: "/usr/local/bin/helmfile --version | cut -d ' ' -f 3"
   ignore_errors: true
-  register: helmfile_current_version
+  register: workstation_helmfile_current_version
   changed_when: false
   check_mode: false
   tags:
@@ -283,13 +286,15 @@
 - name: Helmfile | check version
   ansible.builtin.debug:
     msg:
-      - "Current helmfile version is {{ helmfile_current_version.stdout }}"
+      - "Current helmfile version is {{ workstation_helmfile_current_version.stdout }}"
       - "Desired helmfile version is {{ workstation_helmfile_version }}"
   tags:
     - helmfile
 
 - name: Helmfile
-  when: helmfile_current_version.stdout != workstation_helmfile_version and not ansible_check_mode
+  when: >-
+    workstation_helmfile_current_version.stdout != workstation_helmfile_version
+    and not ansible_check_mode
   block:
     - name: Helmfile | Download
       ansible.builtin.get_url:

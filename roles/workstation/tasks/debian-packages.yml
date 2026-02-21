@@ -79,7 +79,10 @@
 
 - name: Add pgadmin4 repository
   ansible.builtin.apt_repository:
-    repo: deb [arch=amd64 signed-by=/etc/apt/keyrings/pgadmin.gpg] https://ftp.postgresql.org/pub/pgadmin/pgadmin4/apt/{{ ansible_distribution_release }} pgadmin4 main
+    repo: >-
+      deb [arch=amd64 signed-by=/etc/apt/keyrings/pgadmin.gpg]
+      https://ftp.postgresql.org/pub/pgadmin/pgadmin4/apt/{{ ansible_distribution_release }}
+      pgadmin4 main
     filename: postgresql
     state: present
   tags:
@@ -266,7 +269,10 @@
 - name: Add docker repository
   ansible.builtin.apt_repository:
     update_cache: true
-    repo: deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable
+    repo: >-
+      deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.gpg]
+      https://download.docker.com/linux/{{ ansible_distribution | lower }}
+      {{ ansible_distribution_release }} stable
     filename: docker
     state: present
   tags:
