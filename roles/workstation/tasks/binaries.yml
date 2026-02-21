@@ -89,7 +89,7 @@
 
 - name: Terraform | Check that Terraform version is installed correctly
   ansible.builtin.assert:
-    that: "terraform_installed_version == terraform_version"
+    that: "terraform_installed_version == workstation_terraform_version"
   when: not ansible_check_mode
   tags:
     - terraform
@@ -144,14 +144,14 @@
 - name: Terragrunt | check version
   ansible.builtin.debug:
     msg:
-      - "Current terragrunt version {{ terragrunt_version }}"
-      - "Desired terragrunt version {{ terragrunt_installed_version }}"
+      - "Current terragrunt version {{ terragrunt_installed_version }}"
+      - "Desired terragrunt version {{ workstation_terragrunt_version }}"
   tags:
     - terragrunt
 
 - name: Terragrunt | Check that Terragrunt version is installed correctly
   ansible.builtin.assert:
-    that: "terragrunt_installed_version == terragrunt_version"
+    that: "terragrunt_installed_version == workstation_terragrunt_version"
   when: not ansible_check_mode
   tags:
     - terragrunt
@@ -161,7 +161,7 @@
 ###################
 
 - name: Register the current Go version (if any)
-  ansible.builtin.shell: "{{ worksstation_golang_install_directory }}/go/bin/go version | cut -d ' ' -f3"
+  ansible.builtin.shell: "{{ workstation__golang_install_directory }}/go/bin/go version | cut -d ' ' -f3"
   ignore_errors: true
   register: golang_current_version
   changed_when: false
@@ -173,18 +173,18 @@
   ansible.builtin.debug:
     msg:
       - "Current golang version is {{ golang_current_version.stdout }}"
-      - "Desired golang version is {{ workstation_golang_version }}"
+      - "Desired golang version is {{ workstation__golang_version }}"
   tags:
     - golang
 
 - name: Golang
-  when: golang_current_version.stdout != workstation_golang_version
+  when: golang_current_version.stdout != workstation__golang_version
   tags:
     - golang
   block:
     - name: Delete old golang version
       ansible.builtin.file:
-        path: "{{ workstation_golang_install_directory }}/go"
+        path: "{{ workstation__golang_install_directory }}/go"
         state: absent
 
     - name: Install golang
@@ -219,33 +219,33 @@
   ansible.builtin.debug:
     msg:
       - "Current helm version is {{ helm_current_version.stdout }}"
-      - "Desired helm version is {{ helm_version }}"
+      - "Desired helm version is {{ workstation_helm_version }}"
   tags:
     - helm
 
 - name: Helm
-  when: helm_current_version.stdout != helm_version
+  when: helm_current_version.stdout != workstation_helm_version
   block:
     - name: Helm | Download
       ansible.builtin.get_url:
-        url: "{{ helm_url }}"
-        dest: /tmp/{{ helm_file }}
+        url: "{{ workstation_helm_url }}"
+        dest: /tmp/{{ workstation_helm_file }}
         mode: '0755'
       tags:
         - helm
 
     - name: Helm | Extract helm binary
       ansible.builtin.unarchive:
-        src: "/tmp/{{ helm_file }}"
+        src: "/tmp/{{ workstation_helm_file }}"
         dest: "/tmp/"
-        creates: "/tmp/{{ helm_arch }}"
+        creates: "/tmp/{{ workstation_helm_arch }}"
       when: not ansible_check_mode
       tags:
         - helm
 
     - name: Helm | copy file
       ansible.builtin.copy:
-        src: "{{ helm_folder }}/helm"
+        src: "{{ workstation_helm_folder }}/helm"
         dest: "/usr/local/bin/helm"
         owner: "{{ lookup('env', 'USER') }}"
         group: "{{ lookup('env', 'USER') }}"
@@ -256,14 +256,14 @@
 
     - name: Helm | Cleanup
       ansible.builtin.file:
-        path: "/tmp/{{ helm_file }}"
+        path: "/tmp/{{ workstation_helm_file }}"
         state: absent
       tags:
         - helm
 
     - name: Helm | folder Cleanup
       ansible.builtin.file:
-        path: "/tmp/{{ helm_arch }}"
+        path: "/tmp/{{ workstation_helm_arch }}"
         state: absent
       tags:
         - helm
@@ -284,24 +284,24 @@
   ansible.builtin.debug:
     msg:
       - "Current helmfile version is {{ helmfile_current_version.stdout }}"
-      - "Desired helmfile version is {{ helmfile_version }}"
+      - "Desired helmfile version is {{ workstation_helmfile_version }}"
   tags:
     - helmfile
 
 - name: Helmfile
-  when: helmfile_current_version.stdout != helmfile_version and not ansible_check_mode
+  when: helmfile_current_version.stdout != workstation_helmfile_version and not ansible_check_mode
   block:
     - name: Helmfile | Download
       ansible.builtin.get_url:
-        url: "{{ helmfile_url }}"
-        dest: /tmp/{{ helmfile_file }}
+        url: "{{ workstation_helmfile_url }}"
+        dest: /tmp/{{ workstation_helmfile_file }}
         mode: '0755'
       tags:
         - helmfile
 
     - name: Helmfile | copy file
       ansible.builtin.copy:
-        src: "{{ helmfile_folder }}/{{ helmfile_file }}"
+        src: "{{ workstation_helmfile_folder }}/{{ workstation_helmfile_file }}"
         dest: "/usr/local/bin/helmfile"
         owner: "{{ lookup('env', 'USER') }}"
         group: "{{ lookup('env', 'USER') }}"
@@ -311,7 +311,7 @@
 
     - name: Helmfile | Cleanup
       ansible.builtin.file:
-        path: "/tmp/{{ helmfile_file }}"
+        path: "/tmp/{{ workstation_helmfile_file }}"
         state: absent
       tags:
         - helmfile
@@ -345,17 +345,18 @@
     - neovim
 
 - name: Install vim-plug
-  ansible.builtin.shell: >
-    set -o pipefail && 
-    sh -c 'curl -fLo 
-    "${XDG_DATA_HOME:-$HOME/.local/share}"
-    /nvim/site/autoload/plug.vim 
-    --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    dest: /home/{{ lookup('env', 'USER') }}/.local/share/nvim/site/autoload/plug.vim
+    owner: "{{ lookup('env', 'USER') }}"
+    group: "{{ lookup('env', 'USER') }}"
+    mode: '0644'
   tags:
     - neovim
 
 - name: Install nvim plugins
-  ansible.builtin.shell: set -o pipefail && nvim +PlugInstall --sync +qall &> /dev/null < /dev/tty
+  ansible.builtin.command: nvim --headless +PlugInstall --sync +qall
+  changed_when: false
   tags:
     - neovim
 

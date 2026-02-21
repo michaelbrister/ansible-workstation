@@ -7,7 +7,7 @@ workstation_terraform_file: "terraform_{{ workstation_terraform_version }}_{{ wo
 workstation_terraform_url: "https://releases.hashicorp.com/terraform/{{ workstation_terraform_version }}/{{ workstation_terraform_file }}"
 workstation_terraform_checksum: "sha256:285539a6fd62fb79f05edc15cc207ca90f282901c32261085ea0642a0d638dfd"
 workstation_terraform_bin_dir: /usr/local/bin
-workstation_terraform_bin: "{{ terraform_bin_dir }}/terraform"
+workstation_terraform_bin: "{{ workstation_terraform_bin_dir }}/terraform"
 workstation_terraform_path: "/opt/terraform"
 workstation_terraform_version_dir: "{{ workstation_terraform_path }}/{{ workstation_terraform_version }}"
 workstation_terraform_version_bin: "{{ workstation_terraform_version_dir }}/terraform"
@@ -25,7 +25,7 @@ workstation_terragrunt_bin_dir: /usr/local/bin
 workstation_minikube_arch: "amd64"
 workstation_minikube_version: "v1.12.0"
 workstation_minikube_release_version: "v1.12.0-0"
-workstation_minikube_file: "minikube_{{ workstation_minikube_release_version }}_{{ workstation_workstation_minikube_arch }}.deb"
+workstation_minikube_file: "minikube_{{ workstation_minikube_release_version }}_{{ workstation_minikube_arch }}.deb"
 workstation_minikube_url: "https://github.com/kubernetes/minikube/releases/download/{{ workstation_minikube_version }}/{{ workstation_minikube_file }}"
 
 workstation_docker_machine_arch: "amd64"
@@ -51,10 +51,10 @@ workstation_helmfile_file: helmfile_linux_amd64
 workstation_helmfile_url: "https://github.com/roboll/helmfile/releases/download/{{ workstation_helmfile_version }}/{{ workstation_helmfile_file }}"
 
 # 1password
-worksstation_1password_arch: "amd64"
-worksstation_1password_release_version: "v1.6.0"
-worksstation_1password_file: "op_linux_{{ workstation_1password_arch }}_{{ workstation_1password_release_version }}.zip"
-worksstation_1password_url: "https://cache.agilebits.com/dist/1P/op/pkg/{{ workstation_1password_release_version }}/{{ workstation_1password_file }}"
+workstation_1password_arch: "amd64"
+workstation_1password_release_version: "v1.6.0"
+workstation_1password_file: "op_linux_{{ workstation_1password_arch }}_{{ workstation_1password_release_version }}.zip"
+workstation_1password_url: "https://cache.agilebits.com/dist/1P/op/pkg/{{ workstation_1password_release_version }}/{{ workstation_1password_file }}"
 
 # docker_compose
 workstation_docker_compose_version: 1.27.4
