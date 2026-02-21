@@ -17,7 +17,13 @@ workstation_terragrunt_arch: "amd64"
 workstation_terragrunt_system: "linux"
 workstation_terragrunt_version: "0.36.2"
 workstation_terragrunt_file: "terragrunt_{{ workstation_terragrunt_system }}_{{ workstation_terragrunt_arch }}"
-workstation_terragrunt_url: "https://github.com/gruntwork-io/terragrunt/releases/download/v{{ workstation_terragrunt_version }}/{{ workstation_terragrunt_file }}"
+workstation_terragrunt_url: >-
+  {{
+    'https://github.com/gruntwork-io/terragrunt/releases/download/v'
+    ~ workstation_terragrunt_version
+    ~ '/'
+    ~ workstation_terragrunt_file
+  }}
 workstation_terragrunt_checksum: "sha256:931b19970cd8962b2af361f58a41bdce3cc75153c39c4cf14c5992ea09a19cb2"
 workstation_terragrunt_bin_dir: /usr/local/bin
 
@@ -32,7 +38,13 @@ workstation_docker_machine_arch: "amd64"
 workstation_docker_machine_version: "v1.12.0"
 workstation_docker_machine_release_version: "v1.12.0-0"
 workstation_docker_machine_driver_file: "docker-machine-driver-kvm2_{{ workstation_docker_machine_release_version }}_{{ workstation_docker_machine_arch }}.deb"
-workstation_docker_machine_driver_url: "https://github.com/kubernetes/minikube/releases/download/{{ workstation_docker_machine_version }}/{{ workstation_docker_machine_driver_file }}"
+workstation_docker_machine_driver_url: >-
+  {{
+    'https://github.com/kubernetes/minikube/releases/download/'
+    ~ workstation_docker_machine_version
+    ~ '/'
+    ~ workstation_docker_machine_driver_file
+  }}
 workstation_docker_machine_driver_checksum: "fabd7a19c8cca563e32321f070311d70404311602e5c9db17b556c0812d1c899"
 
 # helm
@@ -65,7 +77,14 @@ workstation_fnm_node_versions:
   - 20.11.1
 
 # lens
-workstation_open_lens_url: https://github.com/MuhammedKalkan/OpenLens/releases/download/v{{ workstation_open_lens_version }}/OpenLens-{{ workstation_open_lens_version }}.amd64.deb
+workstation_open_lens_url: >-
+  {{
+    'https://github.com/MuhammedKalkan/OpenLens/releases/download/v'
+    ~ workstation_open_lens_version
+    ~ '/OpenLens-'
+    ~ workstation_open_lens_version
+    ~ '.amd64.deb'
+  }}
 workstation_open_lens_version: 6.4.15
 
 # mage
@@ -74,4 +93,13 @@ workstation_mage_binary_url: https://github.com/magefile/mage/releases/download/
 # sops - encrypt terraform
 workstation_sops_version: 3.7.2
 workstation_sops_arch: amd64
-workstation_sops_url: https://github.com/mozilla/sops/releases/download/v{{ workstation_sops_version }}/sops_{{ workstation_sops_version }}_{{ workstation_sops_arch }}.deb
+workstation_sops_url: >-
+  {{
+    'https://github.com/mozilla/sops/releases/download/v'
+    ~ workstation_sops_version
+    ~ '/sops_'
+    ~ workstation_sops_version
+    ~ '_'
+    ~ workstation_sops_arch
+    ~ '.deb'
+  }}
