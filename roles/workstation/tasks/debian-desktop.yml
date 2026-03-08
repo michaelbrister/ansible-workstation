@@ -1,0 +1,41 @@
+---
+
+- name: Install pgadmin4
+  ansible.builtin.apt:
+    update_cache: true
+    name: pgadmin4
+    state: present
+  tags:
+    - pgadmin4
+
+- name: Install 1password
+  ansible.builtin.apt:
+    name: 1password
+    state: present
+  tags:
+    - 1password
+
+- name: Ensure 1password SSH directory exists
+  ansible.builtin.file:
+    path: /home/{{ workstation_user }}/.config/1Password/ssh
+    state: directory
+    recurse: true
+    mode: "0700"
+  tags:
+    - 1password
+
+- name: Install Sublime Text and Sublime Merge
+  ansible.builtin.apt:
+    update_cache: true
+    name:
+      - sublime-text
+      - sublime-merge
+    state: present
+  tags:
+    - sublime-text
+
+- name: Install sops
+  ansible.builtin.apt:
+    deb: "{{ workstation_sops_url }}"
+  tags:
+    - sops

@@ -2,8 +2,9 @@
 
 - name: NPM Install serverless
   community.general.npm:
-    name: serverless
+    name: "{{ item }}"
     global: true
     state: present
+  loop: "{{ workstation_npm_packages }}"
   tags:
     - npm

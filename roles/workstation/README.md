@@ -1,38 +1,27 @@
-Role Name
-=========
+# workstation role
 
-A brief description of the role goes here.
+Bootstraps a Linux workstation with a mix of distro packages, third-party repositories, direct-download tools, and user dotfiles.
 
-Requirements
-------------
+## Structure
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+- `tasks/debian-base.yml`: apt cache management and baseline apt packages
+- `tasks/debian-repositories.yml`: apt keyring and repository management
+- `tasks/debian-desktop.yml`: desktop applications installed from apt or `.deb`
+- `tasks/debian-containers.yml`: Docker engine and Compose plugin
+- `tasks/debian-k8s.yml`: kubectl and minikube
+- `tasks/binaries.yml`: Terraform, Terragrunt, Go, Helm, Helmfile, Neovim, shell config, and other binaries
 
-Role Variables
---------------
+## Important defaults
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+- `workstation_user`: local user that should own home-directory content
+- `workstation_apt_full_upgrade`: opt-in full apt upgrade switch
+- `workstation_apt_packages`
+- `workstation_pip_packages`
+- `workstation_npm_packages`
+- `workstation_snap_packages`
 
-Dependencies
-------------
+## Assumptions
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
-
-Example Playbook
-----------------
-
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
-
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
-
-License
--------
-
-BSD
-
-Author Information
-------------------
-
-An optional section for the role authors to include contact information, or a website (HTML is not allowed).
+- The role is primarily built for Debian and Ubuntu.
+- It expects privilege escalation for system package installation and writes into `/usr/local/bin`, `/opt`, and `/etc`.
+- Several tools are intentionally pinned. Treat those pins as historical defaults, not current recommendations.

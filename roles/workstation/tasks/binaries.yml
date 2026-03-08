@@ -111,7 +111,6 @@
   ansible.builtin.get_url:
     url: "{{ workstation_terragrunt_url }}"
     dest: "/usr/local/bin/terragrunt"
-    checksum: "{{ workstation_terragrunt_checksum }}"
     mode: "0664"
   when: not workstation_terragrunt_bin_st.stat.exists
   tags:
@@ -120,8 +119,8 @@
 - name: Terragrunt | set permissions
   ansible.builtin.file:
     path: "/usr/local/bin/terragrunt"
-    owner: "{{ lookup('env', 'USER') }}"
-    group: "{{ lookup('env', 'USER') }}"
+    owner: "{{ workstation_user }}"
+    group: "{{ workstation_user }}"
     mode: '0755'
   tags:
     - terragrunt
@@ -250,8 +249,8 @@
       ansible.builtin.copy:
         src: "{{ workstation_helm_folder }}/helm"
         dest: "/usr/local/bin/helm"
-        owner: "{{ lookup('env', 'USER') }}"
-        group: "{{ lookup('env', 'USER') }}"
+        owner: "{{ workstation_user }}"
+        group: "{{ workstation_user }}"
         mode: '0755'
       when: not ansible_check_mode
       tags:
@@ -308,8 +307,8 @@
       ansible.builtin.copy:
         src: "{{ workstation_helmfile_folder }}/{{ workstation_helmfile_file }}"
         dest: "/usr/local/bin/helmfile"
-        owner: "{{ lookup('env', 'USER') }}"
-        group: "{{ lookup('env', 'USER') }}"
+        owner: "{{ workstation_user }}"
+        group: "{{ workstation_user }}"
         mode: '0755'
       tags:
         - helmfile
@@ -327,11 +326,21 @@
 
 - name: Create neovim config directory
   ansible.builtin.file:
-    path: /home/{{ lookup('env', 'USER') }}/.config/nvim
+    path: /home/{{ workstation_user }}/.config/nvim
     state: directory
-    owner: "{{ lookup('env', 'USER') }}"
-    group: "{{ lookup('env', 'USER') }}"
+    owner: "{{ workstation_user }}"
+    group: "{{ workstation_user }}"
     mode: '0775'
+  tags:
+    - neovim
+
+- name: Create vim-plug autoload directory
+  ansible.builtin.file:
+    path: /home/{{ workstation_user }}/.local/share/nvim/site/autoload
+    state: directory
+    owner: "{{ workstation_user }}"
+    group: "{{ workstation_user }}"
+    mode: '0755'
   tags:
     - neovim
 
@@ -342,9 +351,9 @@
 - name: Copy init.vim
   ansible.builtin.copy:
     src: init.vim
-    dest: /home/{{ lookup('env', 'USER') }}/.config/nvim/init.vim
-    owner: "{{ lookup('env', 'USER') }}"
-    group: "{{ lookup('env', 'USER') }}"
+    dest: /home/{{ workstation_user }}/.config/nvim/init.vim
+    owner: "{{ workstation_user }}"
+    group: "{{ workstation_user }}"
     mode: '0664'
   tags:
     - neovim
@@ -352,9 +361,9 @@
 - name: Install vim-plug
   ansible.builtin.get_url:
     url: https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    dest: /home/{{ lookup('env', 'USER') }}/.local/share/nvim/site/autoload/plug.vim
-    owner: "{{ lookup('env', 'USER') }}"
-    group: "{{ lookup('env', 'USER') }}"
+    dest: /home/{{ workstation_user }}/.local/share/nvim/site/autoload/plug.vim
+    owner: "{{ workstation_user }}"
+    group: "{{ workstation_user }}"
     mode: '0644'
   tags:
     - neovim
@@ -372,9 +381,50 @@
 - name: Copy zshrc
   ansible.builtin.copy:
     src: zshrc
-    dest: /home/{{ lookup('env', 'USER') }}/.zshrc
-    owner: "{{ lookup('env', 'USER') }}"
-    group: "{{ lookup('env', 'USER') }}"
+    dest: /home/{{ workstation_user }}/.zshrc
+    owner: "{{ workstation_user }}"
+    group: "{{ workstation_user }}"
     mode: '0644'
   tags:
     - neovim
+
+########################
+# Install user binaries
+########################
+
+- name: Ensure local bin directory exists
+  ansible.builtin.file:
+    path: /home/{{ workstation_user }}/.local/bin
+    state: directory
+    owner: "{{ workstation_user }}"
+    group: "{{ workstation_user }}"
+    mode: '0755'
+  tags:
+    - jwt-cli
+
+- name: Extract jwt-cli archive
+  ansible.builtin.unarchive:
+    src: https://github.com/mike-engel/jwt-cli/releases/download/4.0.0/jwt-linux.tar.gz
+    dest: /home/{{ workstation_user }}/.local/bin
+    remote_src: true
+  tags:
+    - jwt-cli
+
+- name: Set jwt-cli permissions
+  ansible.builtin.file:
+    path: /home/{{ workstation_user }}/.local/bin/jwt
+    owner: "{{ workstation_user }}"
+    group: "{{ workstation_user }}"
+    mode: '0755'
+  tags:
+    - jwt-cli
+
+- name: Install mage
+  ansible.builtin.unarchive:
+    src: "{{ workstation_mage_binary_url }}"
+    dest: /usr/local/bin/
+    include:
+      - mage
+    remote_src: true
+  tags:
+    - mage

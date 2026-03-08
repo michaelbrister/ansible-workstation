@@ -1,0 +1,25 @@
+---
+
+- name: Install Docker engine
+  ansible.builtin.apt:
+    name:
+      - docker-ce
+      - docker-compose-plugin
+    state: present
+  tags:
+    - docker
+
+- name: Ensure user primary group is set
+  ansible.builtin.user:
+    name: "{{ workstation_user }}"
+    group: "{{ workstation_user }}"
+  tags:
+    - docker
+
+- name: Add user to docker supplemental group
+  ansible.builtin.user:
+    name: "{{ workstation_user }}"
+    groups: docker
+    append: true
+  tags:
+    - docker

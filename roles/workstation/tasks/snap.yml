@@ -1,9 +1,5 @@
 ---
 - name: Install snap packages
   community.general.snap:
-    name:
-      - kontena-lens
-      - intellij-idea-community
-      - slack
-      - yq
+    name: "{{ workstation_snap_packages }}"
     classic: true

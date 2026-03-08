@@ -1,25 +1,52 @@
 ---
 
-# tasks file for Work
-- name: Include base packages
-  ansible.builtin.import_tasks: debian-packages.yml
-  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+- name: Include Debian base packages
+  ansible.builtin.import_tasks: debian-base.yml
+  when: ansible_distribution in ['Debian', 'Ubuntu']
   tags:
     - packages
 
-- name: Include pip modules
+- name: Include Debian third-party repositories
+  ansible.builtin.import_tasks: debian-repositories.yml
+  when: ansible_distribution in ['Debian', 'Ubuntu']
+  tags:
+    - packages
+    - repositories
+
+- name: Include Debian desktop packages
+  ansible.builtin.import_tasks: debian-desktop.yml
+  when: ansible_distribution in ['Debian', 'Ubuntu']
+  tags:
+    - packages
+    - desktop
+
+- name: Include container tooling
+  ansible.builtin.import_tasks: debian-containers.yml
+  when: ansible_distribution in ['Debian', 'Ubuntu']
+  tags:
+    - packages
+    - docker
+
+- name: Include Kubernetes tooling
+  ansible.builtin.import_tasks: debian-k8s.yml
+  when: ansible_distribution in ['Debian', 'Ubuntu']
+  tags:
+    - packages
+    - k8s
+
+- name: Include Python packages
   ansible.builtin.import_tasks: pip.yml
   tags:
     - pip
 
-- name: Include packages from binaries
+- name: Include direct-download tooling
   ansible.builtin.import_tasks: binaries.yml
   tags:
     - binaries
 
 - name: Include snap packages
   ansible.builtin.import_tasks: snap.yml
-  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  when: ansible_distribution in ['Debian', 'Ubuntu']
   tags:
     - snap
 

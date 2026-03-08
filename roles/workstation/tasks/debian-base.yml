@@ -1,0 +1,22 @@
+---
+
+- name: Update apt package cache
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 86400
+
+- name: Upgrade installed apt packages
+  ansible.builtin.apt:
+    upgrade: dist
+  when: workstation_apt_full_upgrade | bool
+
+- name: Install base apt packages
+  ansible.builtin.apt:
+    name: "{{ workstation_apt_packages }}"
+    state: present
+
+- name: Ensure APT keyrings directory exists
+  ansible.builtin.file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: "0755"

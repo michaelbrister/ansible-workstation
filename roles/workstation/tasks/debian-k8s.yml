@@ -1,0 +1,26 @@
+---
+
+- name: Install kubectl
+  ansible.builtin.apt:
+    update_cache: true
+    name: kubectl
+    state: present
+  tags:
+    - k8s
+
+- name: Install minikube
+  ansible.builtin.get_url:
+    url: https://storage.googleapis.com/minikube/releases/{{ workstation_minikube_version }}/minikube-linux-amd64
+    dest: /usr/local/bin/minikube
+    mode: "0755"
+  tags:
+    - k8s
+
+- name: Set minikube permissions
+  ansible.builtin.file:
+    path: /usr/local/bin/minikube
+    owner: "{{ workstation_user }}"
+    group: docker
+    mode: "0755"
+  tags:
+    - k8s
